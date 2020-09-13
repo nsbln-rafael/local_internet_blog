@@ -22,7 +22,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+	            $request->session()->flash('error', 'Action is not allowed!');
+
+	            return redirect(RouteServiceProvider::HOME);
             }
         }
 

@@ -18,8 +18,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 
-// -- Auth --
-Route::match(['get','post'], '/login',        [HomeController::class, 'login']);
-Route::match(['get','post'], '/registration', [HomeController::class, 'registration']);
-Route::match(['get'],        '/logout',       [HomeController::class, 'logout']);
-// -- -- -- --
+Route::group(['middleware' => 'auth'], function() {
+	// -- Auth --
+	Route::match(['get'], '/logout', [HomeController::class, 'logout']);
+	// -- -- -- --
+});
+
+Route::group(['middleware' => 'guest'], function() {
+	// -- Auth --
+	Route::match(['get','post'], '/login',        [HomeController::class, 'login']);
+	Route::match(['get','post'], '/registration', [HomeController::class, 'registration']);
+	// -- -- -- --
+});

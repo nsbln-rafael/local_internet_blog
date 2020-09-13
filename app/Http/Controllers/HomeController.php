@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 /**
- * Основной контроллер
+ * Main controller
  */
 class HomeController extends BaseController
 {
 	/**
-	 * Главная страница
+	 * Home page
 	 *
 	 * @return Response
 	 */
@@ -26,29 +30,87 @@ class HomeController extends BaseController
 	}
 
 	/**
-	 * Аутентификация
+	 * Login page
 	 *
-	 * @return Response
+	 * @param Request $request Params
+	 *
+	 * @return mixed
+	 *
+	 * @throws ValidationException
 	 */
-	public function login(): Response
+	public function login(Request $request)
 	{
+		if ($request->isMethod('post')) {
+
+			$validator = Validator::make($request->post(), [
+				User::ATTR_EMAIL    => 'required|email|max:255',
+				User::ATTR_PASSWORD => 'required',
+			]);
+
+			if ($validator->fails()) {
+				return response()->redirectTo('/login')
+					->withErrors($validator)
+					->withInput();
+			}
+
+			$credentials = $validator->validated();
+
+			if (Auth::attempt($credentials)) {
+				$request->session()->flash('status', 'Welcome!');
+
+				return response()->redirectTo('/');
+			} else {
+				$request->session()->flash('error', 'Wrong credentials! Try again.');
+
+				return response()->redirectTo('/login');
+			}
+		}
+
 		return response()->view('auth.login');
 	}
 
 	/**
-	 * Регистрация
+	 * Registration page
 	 *
-	 * @return Response
+	 * @param Request $request Params
+	 *
+	 * @return mixed
+	 *
+	 * @throws ValidationException
 	 */
-	public function registration(): Response
+	public function registration(Request $request)
 	{
+		if ($request->isMethod('post')) {
+
+			$validator = Validator::make($request->post(), [
+				User::ATTR_EMAIL    => 'required|email|unique:users|max:255',
+				User::ATTR_PASSWORD => 'required',
+			]);
+
+			if ($validator->fails()) {
+				return redirect('/registration')
+					->withErrors($validator)
+					->withInput();
+			}
+
+			$credentials    = $validator->validated();
+			$user           = new User;
+			$user->email    = $credentials[User::ATTR_EMAIL];
+			$user->password = Hash::make($credentials[User::ATTR_PASSWORD]);
+			$user->save();
+
+			$request->session()->flash('status', 'Successfully registered!');
+
+			return redirect('/login');
+		}
+
 		return response()->view('auth.register');
 	}
 
 	/**
-	 * Выход из системы
+	 * Logout page
 	 *
-	 * @param Request $request Параметры запроса
+	 * @param Request $request Params
 	 *
 	 * @return RedirectResponse
 	 */
@@ -58,9 +120,9 @@ class HomeController extends BaseController
 
 		if (null !== $user) {
 			Auth::logout();
-		}
 
-		$request->session()->flash('status', 'Successfully logged out!');
+			$request->session()->flash('status', 'Successfully logged out!');
+		}
 
 		return response()->redirectTo('/');
 	}

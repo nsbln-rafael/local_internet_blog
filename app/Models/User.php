@@ -9,14 +9,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Класс пользователя
+ * User class
  */
 class User extends Authenticatable
 {
 	use HasFactory, Notifiable;
 
+	public const ATTR_EMAIL    = 'email';
+	public const ATTR_PASSWORD = 'password';
+
 	/**
-	 * Основные атрибуты.
+	 * The attributes that are mass assignable
 	 *
 	 * @var array
 	 */
@@ -25,7 +28,7 @@ class User extends Authenticatable
 	];
 
 	/**
-	 * Скрытые для массивов атрибуты
+	 * The attributes that should be hidden for arrays
 	 *
 	 * @var array
 	 */
@@ -34,7 +37,7 @@ class User extends Authenticatable
 	];
 
 	/**
-	 * Атрибуты, которые следует приводить к собственным типам
+	 * The attributes that should be cast to native types
 	 *
 	 * @var array
 	 */

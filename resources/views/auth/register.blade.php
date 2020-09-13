@@ -1,24 +1,28 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="row text-center">
-        <div class="col-md-6 offset-md-4">
-            <form style="max-width: 300px">
+	<div class="row">
+		<div class="col-md-6 offset-md-4">
 
-                <h1 class="h4 mb-3 font-weight-normal">Registration</h1>
+			<form style="max-width: 300px" method="post">
+				@csrf
+				<h1 class="h4 mb-3 font-weight-normal">Registration</h1>
 
-                <div class="form-group">
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-                </div>
+				<div class="form-group">
+					<input name="email" value="{{ old('email') ? old('email') : '' }}" type="text" id="inputEmail" class="form-control" placeholder="Email address" autofocus="">
+					<span class="small error text-danger">{{ $errors->first('email') }}</span>
+				</div>
 
-                <div class="form-group">
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-                </div>
+				<div class="form-group">
+					<input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password">
+					<span class="small error text-danger">{{ $errors->first('password') }}</span>
+				</div>
 
-                <div class="form-group">
-                    <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
-                </div>
-            </form>
-        </div>
-    </div>
+				<div class="form-group">
+					<button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
 @endsection

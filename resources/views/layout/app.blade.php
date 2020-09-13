@@ -19,9 +19,13 @@
 					<ul class="navbar-nav mr-auto">
 					</ul>
 					<div class="form-inline mt-2 mt-md-0">
-						<a href="{{ url('login') }}" class="navbar" style="color: white" >Login</a>
-						<a href="{{ url('registration') }}" class="navbar" style="color: white">Register</a>
-						<a href="{{ url('logout') }}" class="navbar" style="color: white">Logout</a>
+						<?php if (Auth::user()): ?>
+							<a class="navbar" style="color: bisque" >Hello, {{ Auth::user()->email  }}</a>
+							<a href="{{ url('logout') }}" class="navbar" style="color: white">Logout</a>
+						<?php else: ?>
+							<a href="{{ url('login') }}" class="navbar" style="color: white" >Login</a>
+							<a href="{{ url('registration') }}" class="navbar" style="color: white">Register</a>
+						<?php endif ?>
 					</div>
 				</div>
 			</nav>
@@ -33,6 +37,10 @@
 			<div id="notification" class="alert alert-primary" role="alert">
 				{{ session('status') }}
 			</div>
+		<?php elseif (session('error')): ?>
+			<div id="notification" class="alert alert-warning" role="alert">
+				{{ session('error') }}
+			</div>
 		<?php endif; ?>
 
 		@yield('content')
@@ -41,7 +49,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>
 	$(document).ready(function() {
-		$('#notification').fadeOut(700); // 5 seconds x 1000 milisec = 5000 milisec
+		$('#notification').fadeOut(2000);
 	});
 </script>
 </html>

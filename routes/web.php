@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
+
+// -- Auth --
+Route::match(['get','post'], '/login',        [HomeController::class, 'login']);
+Route::match(['get','post'], '/registration', [HomeController::class, 'registration']);
+Route::match(['get'],        '/logout',       [HomeController::class, 'logout']);
+// -- -- -- --

@@ -34,6 +34,19 @@
 	</div>
 
 	<div class="container">
+		<?php if (Route::current()->uri !== 'login' && Route::current()->uri !== 'registration'): ?>
+			<form action="{{ url('/')}}" method="get" style="margin-bottom: 30px">
+				<div class="form-row align-items-center">
+					<div class="col-auto">
+						<input name="search" type="text" class="form-control mb-2" placeholder="Search">
+					</div>
+
+					<div class="col-auto">
+						<button type="submit" class="btn btn-success mb-2">Search</button>
+					</div>
+				</div>
+			</form>
+		<?php endif ?>
 		<?php if (session('status')): ?>
 			<div id="notification" class="alert alert-primary" role="alert">
 				{{ session('status') }}

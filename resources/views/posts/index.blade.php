@@ -51,4 +51,7 @@
 			<?php endforeach ?>
 		<?php endif ?>
 	</div>
+	<div class="row">
+		{{ $posts->links("pagination::bootstrap-4") }}
+	</div>
 @endsection

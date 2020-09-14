@@ -33,7 +33,14 @@
 						<a href="{{ url('/')}}" type="button" class="btn btn-sm btn-outline-secondary">Back</a>
 					</div>
 				</div>
-			</div>
+				<div class="d-flex justify-content-between align-items-center" style="margin-top: 10px">
+					<span>Share in:</span>
+					<div class="btn-group">
+						<script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+						<script src="https://yastatic.net/share2/share.js"></script>
+						<div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir"></div>
+					</div>
+				</div>
 		</div>
 	</div>
 @endsection

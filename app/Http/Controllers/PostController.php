@@ -23,11 +23,16 @@ class PostController extends Controller
 	/**
 	 * Home page
 	 *
+	 * @param Request $request Params
+	 *
 	 * @return Response
 	 */
-	public function index(): Response
+	public function index(Request $request): Response
 	{
-		$posts = Post::all();
+		$search = $request->search;
+		$posts = Post::where(Post::ATTR_HEADER, 'LIKE', '%' . $search . '%')->paginate(10);
+
+		$posts->appends(['search' => $search]);
 
 		return response()->view('posts.index', ['posts' => $posts]);
 	}

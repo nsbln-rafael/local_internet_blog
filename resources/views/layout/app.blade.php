@@ -21,6 +21,7 @@
 					<div class="form-inline mt-2 mt-md-0">
 						<?php if (Auth::user()): ?>
 							<a class="navbar" style="color: bisque" >Hello, {{ Auth::user()->email  }}</a>
+							<a href="{{ url('create') }}" class="navbar" style="color: white" >Add post</a>
 							<a href="{{ url('logout') }}" class="navbar" style="color: white">Logout</a>
 						<?php else: ?>
 							<a href="{{ url('login') }}" class="navbar" style="color: white" >Login</a>

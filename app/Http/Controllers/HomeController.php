@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,16 +18,6 @@ use Illuminate\Validation\ValidationException;
  */
 class HomeController extends BaseController
 {
-	/**
-	 * Home page
-	 *
-	 * @return Response
-	 */
-	public function index(): Response
-	{
-		return response()->view('index');
-	}
-
 	/**
 	 * Login page
 	 *
